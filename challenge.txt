@@ -1,0 +1,154 @@
+Here’s the requirement, please keep track of how much time you spend for each task and provide that along with the code once you complete it.
+
+create function getAvailableTimeSlots - get the available time slots from current time to the next x days based on the store open hours setting; for today, it should return the time slots from current time plus minutes of preparation time and round to 15 min till end of the delivery hours), if today is not open, do not return the time slots for today. The open hours can be in multiple periods for one day. if it's currently open, then add "ASAP" before the first time slot.
+
+create function isOpenNow - tell whether the store is currently open based on the given open hours and timezone of the store;
+
+requirement:
+
+complete the required function;
+
+design unit test code and prove your code works properly in all boundary and cross day cases;
+
+bonus: resign the open_hours format to make the code be more efficient and easier to maintain/understand.
+
+Input for isOpenNow function: (open_hours, time_zone)
+
+time_zone: the time zone so it can be used to calculate the current time of the specific time zone and return time range of that specific timezone that is available for delivery;
+
+Input for getAvailableTimeSlots function: (open_hours, time_zone, range=30, interval=15, days=3, preparation_minutes=10)
+time_zone: the time zone for the store, so it can be used to calculate the current time of the specific time zone and return time range of that specific timezone that is available for delivery;
+range: default to 30: the time range
+interval: default to 15: the interval between different time slots
+days: default to 3, the next x days available delivery time slots.
+preparation_minutes: the preparation time for the store in minutes, range from 0 to 180;
+open_hours: format(samples):
+{"MON":"CLOSED","TUE":"09:00-17:00","WED":"09:00-17:00,19:00-3:00","THU":"09:00-17:00","FRI":"09:00-17:00,22:00-03:00","SAT":"ALL","SUN":"ALL”}
+{"ALL":"CLOSED"} or {"ALL":"-1"} closed every day
+{"ALL":"ALL"} or {"ALL":"1"} open every day any time;
+{"ALL":"9:00-17:00, 19:00-2:00"} open every day from 9:00 - 17:00 and 19:00-2:00 (cross day)
+
+
+Output:
+Sample JSON format of the days and available hours slots (assume the test was done on Jul 2, it’s open when calling the function, range =30, interval = 15, preparation_minutes =10, current time = 8:40am) 
+{
+   "2019-07-02":[
+      "ASAP”,
+      "9:00am-9:30am",
+      "9:15am-9:45am",
+      "9:30am-10:00am",
+      "9:45am-10:15am",
+      "10:00am-10:30am",
+      "10:15am-10:45am",
+      "10:30am-11:00am",
+      "10:45am-11:15am",
+      "11:00am-11:30am",
+      "11:15am-11:45am",
+      "11:30am-12:00pm",
+      "11:45am-12:15pm",
+      "12:00pm-12:30pm",
+      "12:15pm-12:45pm",
+      "12:30pm-1:00pm",
+      "12:45pm-1:15pm",
+      "1:00pm-1:30pm",
+      "1:15pm-1:45pm",
+      "1:30pm-2:00pm",
+      "1:45pm-2:15pm",
+      "2:00pm-2:30pm",
+      "2:15pm-2:45pm",
+      "2:30pm-3:00pm",
+      "2:45pm-3:15pm",
+      "3:00pm-3:30pm",
+      "3:15pm-3:45pm",
+      "3:30pm-4:00pm",
+      "3:45pm-4:15pm",
+      "4:00pm-4:30pm",
+      "4:15pm-4:45pm",
+      "4:30pm-5:00pm" 
+   ],
+   "2019-07-03":[
+      "9:00am-9:30am",
+      "9:15am-9:45am",
+      "9:30am-10:00am",
+      "9:45am-10:15am",
+      "10:00am-10:30am",
+      "10:15am-10:45am",
+      "10:30am-11:00am",
+      "10:45am-11:15am",
+      "11:00am-11:30am",
+      "11:15am-11:45am",
+      "11:30am-12:00pm",
+      "11:45am-12:15pm",
+      "12:00pm-12:30pm",
+      "12:15pm-12:45pm",
+      "12:30pm-1:00pm",
+      "12:45pm-1:15pm",
+      "1:00pm-1:30pm",
+      "1:15pm-1:45pm",
+      "1:30pm-2:00pm",
+      "1:45pm-2:15pm",
+      "2:00pm-2:30pm",
+      "2:15pm-2:45pm",
+      "2:30pm-3:00pm",
+      "2:45pm-3:15pm",
+      "3:00pm-3:30pm",
+      "3:15pm-3:45pm",
+      "3:30pm-4:00pm",
+      "3:45pm-4:15pm",
+      "4:00pm-4:30pm",
+      "4:15pm-4:45pm",
+      "4:30pm-5:00pm",
+      "7:00pm-7:30pm",
+      "7:15pm-7:45pm",
+      "7:30pm-8:00pm",
+      "7:45pm-8:15pm",
+      "8:00pm-8:30pm",
+      "8:15pm-8:45pm",
+      "8:30pm-9:00pm",
+      "8:45pm-9:15pm",
+      "9:00pm-9:30pm",
+      "9:15pm-9:45pm",
+      "9:30pm-10:00pm",
+      "9:45pm-10:15pm",
+      "10:00pm-10:30pm",
+      "10:15pm-10:45pm",
+      "10:30pm-11:00pm" 
+   ],
+   "2019-07-04":[
+      "9:00am-9:30am",
+      "9:15am-9:45am",
+      "9:30am-10:00am",
+      "9:45am-10:15am",
+      "10:00am-10:30am",
+      "10:15am-10:45am",
+      "10:30am-11:00am",
+      "10:45am-11:15am",
+      "11:00am-11:30am",
+      "11:15am-11:45am",
+      "11:30am-12:00pm",
+      "11:45am-12:15pm",
+      "12:00pm-12:30pm",
+      "12:15pm-12:45pm",
+      "12:30pm-1:00pm",
+      "12:45pm-1:15pm",
+      "1:00pm-1:30pm",
+      "1:15pm-1:45pm",
+      "1:30pm-2:00pm",
+      "1:45pm-2:15pm",
+      "2:00pm-2:30pm",
+      "2:15pm-2:45pm",
+      "2:30pm-3:00pm",
+      "2:45pm-3:15pm",
+      "3:00pm-3:30pm",
+      "3:15pm-3:45pm",
+      "3:30pm-4:00pm",
+      "3:45pm-4:15pm",
+      "4:00pm-4:30pm",
+      "4:15pm-4:45pm",
+      "4:30pm-5:00pm" 
+   ]
+}
+
+reference of available time slots:
+https://www.ubereats.com/en-CA/vancouver/food-delivery/sunflower-bubble-tea/PE88PIPSTDOkEellv211wg/
+
