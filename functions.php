@@ -22,12 +22,12 @@
 
      /**
      * 
-     * @param {*} open_hours 
-     * @param {*} time_zone 
-     * @param {*} range  
-     * @param {*} interval 
-     * @param {*} days 
-     * @param {*} preparation_minutes 
+     * @param String open_hours 
+     * @param String time_zone 
+     * @param Int range  
+     * @param Int interval 
+     * @param Int days 
+     * @param Int preparation_minutes 
      * 
      * @return JSON object of available time slots over given days
      */
@@ -38,17 +38,17 @@
         if(isClosedEveryday($open_hours,$time_zone)) {
             echo "Store is closed every day."."<br>";
         } else 
-        echo json_encode(getAvailableTimeSlots_Wrap($open_hours, $time_zone, $preparation_minutes, $range, $interval, $days));
+        return json_encode(getAvailableTimeSlots_Wrap($open_hours, $time_zone, $preparation_minutes, $range, $interval, $days));
     }
 
     /**
      * 
-     * @param {*} open_hours 
-     * @param {*} time_zone 
-     * @param {*} range  
-     * @param {*} interval 
-     * @param {*} days 
-     * @param {*} preparation_minutes 
+     * @param String open_hours 
+     * @param String time_zone 
+     * @param Int range  
+     * @param Int interval 
+     * @param Int days 
+     * @param Int preparation_minutes 
      * 
      * @return JSON object of available time slots over given days
      */
@@ -87,9 +87,12 @@
 
     /**
      * 
+     * @param String searchKey
+     * @param Array hoursDecoded
+     * @param Int range
+     * @param Int interval
      * 
-     * 
-     * 
+     * @return Array of size $dateArray filled with either a time range, CLOSED, or ALL
      */
     function getTimeRange($searchKey,$hoursDecoded,$range,$interval) {
 
@@ -120,10 +123,11 @@
 
     /**
      * 
+     * @param String hours
+     * @param Int range
+     * @param Int interval
      * 
-     * 
-     * 
-     * 
+     * @return Array between hours in H:ia - H:ia format, every $interval minutes for $range minutes
      */
     function getTime($hours,$range,$interval) {
 
@@ -148,10 +152,10 @@
 
     /**
      * 
-     * @param {*} days 
-     * @param {*} time_zone
+     * @param Int days 
+     * @param String time_zone
      * 
-     * @return array of days starting from today in Y-m-d format
+     * @return Array of days starting from today in Y-m-d format
      * 
      */
     function getDateRange($days, $time_zone) {
@@ -170,9 +174,9 @@
     }
 
     /**
-     *  @param {*} open_hours
+     *  @param String open_hours
      * 
-     *  @return associative array based on the given hours
+     *  @return Array based on the given hours
      */
     function decodeHours($open_hours) {
         $array = json_decode($open_hours,true);
@@ -187,10 +191,10 @@
 
     /**
      * returns true if store is currently open, based on open_hours and given time_zone
-     * @param {*} open_hours 
-     * @param {*} time_zone
+     * @param String open_hours 
+     * @param String time_zone
      * 
-     * @return boolean true if open based on open_hours, otherwise false
+     * @return Boolean true if open based on open_hours, otherwise false
      * throws exception if either open_hours or time_zone is not passed in as argument
      *
      */
@@ -217,12 +221,25 @@
        
         getAvailableTimeSlots($someJson, "America/Los_Angeles",10);
         echo "<br>";
-        //getAvailableTimeSlots($openEveryday, "America/Los_Angeles",10);
         echo "<br>";
-        // getAvailableTimeSlots($openEveryday1, "America/Los_Angeles",10);
         echo "<br>";
-        // getAvailableTimeSlots($allCrossdays, "America/Los_Angeles",10);
+        getAvailableTimeSlots($openEveryday, "America/Los_Angeles",10);
         echo "<br>";
+        echo "<br>";
+        echo "<br>";
+        getAvailableTimeSlots($openEveryday1, "America/Los_Angeles",10);
+        echo "<br>";
+        echo "<br>";
+        echo "<br>";
+        getAvailableTimeSlots($allCrossdays, "America/Los_Angeles",10);
+        echo "<br>";
+        echo "<br>";
+        echo "<br>";
+        getAvailableTimeSlots($closedEveryday, "America/Los_Angeles",10);
+        echo "<br>";
+        echo "<br>";
+        echo "<br>";
+        getAvailableTimeSlots($closedEveryday1, "America/Los_Angeles",10);
 
         
     } catch (Exception $e) {
@@ -244,6 +261,11 @@
 
 
     /** 
+     * 
+     * @param String open_hours
+     * @param String time_zone
+     * 
+     * 
      * @return True if is closed everyday
      */
     function isClosedEveryday($open_hours,$time_zone) {
